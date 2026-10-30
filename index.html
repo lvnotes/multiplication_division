@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Самостійна робота</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Nunito:wght@400;700;800&subset=cyrillic,latin&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1d3557;--sky:#eaf3fb;--line:#c9d9ea;--cell:#fff1a8;--cellb:#d9b93e;--ok:#bdeccb;--okb:#2f9e57;--bad:#ffc6c6;--badb:#d64545}
+*{box-sizing:border-box}
+body{margin:0;background:var(--sky);color:var(--ink);font:18px/1.5 Nunito,"Trebuchet MS",system-ui,sans-serif}
+main{max-width:1000px;margin:0 auto;padding:24px 16px 56px}
+h1{font:400 clamp(36px,7vw,58px)/1.1 Marmelad,"Trebuchet MS",sans-serif;color:#2a63b5;text-shadow:2px 2px 0 #fff,4px 4px 0 #b9d3ef;margin:8px 0 24px}
+section{background:#fff;border:2px solid var(--line);border-radius:18px;padding:18px 20px;margin-bottom:20px}
+h2{font-size:20px;margin:0 0 16px;display:flex;gap:10px;align-items:center}
+h2 b{display:grid;place-items:center;flex:none;width:32px;height:32px;border-radius:50%;background:var(--ink);color:#fff}
+input{font:800 20px Nunito,"Trebuchet MS",sans-serif;color:var(--ink);background:var(--cell);border:2px solid var(--cellb);border-radius:6px;text-align:center;height:40px}
+input:focus{outline:3px solid #3b82f6;outline-offset:1px;position:relative;z-index:2}
+input:disabled{-webkit-text-fill-color:var(--ink);opacity:1}
+.in{width:6.2em}
+.bx{width:26px;margin:0 1px;padding:0}
+.bxs{display:inline-flex}
+.fw{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px}
+.fix{font-size:15px;font-weight:800}
+.ok input{background:var(--ok);border-color:var(--okb)}.ok .fix{color:#1b7a40;font-size:22px}
+.bad input{background:var(--bad);border-color:var(--badb)}.bad .fix{color:#b02a2a}
+.exprs{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px 24px}
+.ex{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-weight:800;font-size:22px}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px;font-weight:800;text-align:center}
+th,td{border:2px solid var(--ink);padding:8px 10px;height:58px}
+th{background:#d9e8f7}
+td .fw{justify-content:center}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,310px),1fr));gap:18px}
+.pb{border:2px dashed var(--line);border-radius:12px;padding:14px 6px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.d{display:inline-block;width:28px;text-align:center;font:800 24px/36px Nunito,sans-serif}
+.long{display:inline-grid;grid-template-columns:auto auto;align-items:start}
+.dvd{border-right:3px solid var(--ink);display:flex;padding:0 4px 0 14px}
+.dvs{border-bottom:3px solid var(--ink);padding-left:6px;min-height:40px;display:flex}
+.qt{grid-column:2;padding:8px 0 0 6px}
+.st{display:grid;grid-template-columns:14px repeat(var(--n),28px);margin-right:7px;padding-top:6px;row-gap:3px;align-content:start}
+.st .fw{justify-content:flex-end}
+.sep{border-top:3px solid var(--ink)}
+.mn{justify-self:end;align-self:start;transform:translateY(calc(-50% - 2px));font:800 26px/40px Nunito,sans-serif;padding-right:2px}
+.sol{font-size:15px;font-weight:700;color:#b02a2a;text-align:center}
+.mul{display:inline-flex;flex-direction:column;align-items:flex-end;min-width:150px}
+.mul .r2{display:flex;justify-content:space-between;align-items:center;width:100%;border-bottom:3px solid var(--ink);margin-bottom:8px}
+.mul .fw{justify-content:flex-end}
+.bar{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+button{font:800 19px Nunito,sans-serif;border-radius:12px;border:2px solid var(--ink);padding:12px 22px;cursor:pointer;background:#fff;color:var(--ink)}
+button.go{background:var(--ink);color:#fff}
+button:disabled{opacity:.45;cursor:default}
+button:focus-visible{outline:3px solid #3b82f6;outline-offset:2px}
+.hint{font:800 22px Marmelad,sans-serif;color:#6b3fa0;margin:0 0 12px}
+#res{border-color:var(--ink);border-width:3px}
+#res .score{font:400 clamp(40px,9vw,64px)/1 Marmelad,sans-serif;margin:0 0 4px}
+#res .track{height:16px;background:#e6eef7;border-radius:8px;overflow:hidden;margin:12px 0}
+#res .track i{display:block;height:100%;background:var(--okb)}
+#res ul{margin:8px 0 0;padding-left:20px}
+[hidden]{display:none!important}
+.hdr{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-weight:800;background:#fff;border:2px solid var(--line);border-radius:12px;padding:8px 14px;margin-bottom:20px}
+button.sm{font-size:15px;padding:6px 12px;border-radius:8px}
+.modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.mode{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:6px;padding:18px;font-size:18px;font-weight:400}
+.mode b{font:400 26px Marmelad,sans-serif}
+label{display:block;font-weight:800;margin:12px 0 4px}
+.txt{width:100%;max-width:360px;text-align:left;padding:0 12px;background:#fff;border-color:var(--ink)}
+</style>
+</head>
+<body>
+<main>
+<h1>Самостійна робота</h1>
+
+<div id="start">
+  <section id="modes">
+    <h2>Обери режим</h2>
+    <div class="modes">
+      <button class="mode" id="m-train"><b>Тренажер</b><span>Нові числа скільки завгодно разів. Відповідь перевіряється одразу, нічого не надсилається.</span></button>
+      <button class="mode" id="m-work"><b>Самостійна робота</b><span>Свій варіант чисел для кожного учня. Перевірка наприкінці, результат надсилається вчителю.</span></button>
+    </div>
+  </section>
+  <section id="wform" hidden>
+    <h2>Хто виконує роботу?</h2>
+    <form id="wf">
+      <label for="nm">Ім’я</label>
+      <input class="txt" id="nm" maxlength="40" autocomplete="off" required>
+      <label for="cl">Клас</label>
+      <input class="txt" id="cl" maxlength="10" autocomplete="off" required placeholder="наприклад, 4-А">
+      <div class="bar"><button class="go" type="submit">Почати роботу</button></div>
+    </form>
+  </section>
+</div>
+
+<div id="work" hidden>
+<div class="hdr"><span id="who"></span><span id="tm"></span><button class="sm" id="sw">Змінити режим</button></div>
+
+<section>
+  <h2><b>1</b>Виконай обчислення усно.</h2>
+  <div class="exprs" id="t1"></div>
+</section>
+
+<section>
+  <h2><b>2</b>Заповни таблицю.</h2>
+  <div class="tw"><table>
+    <thead><tr><th>Швидкість</th><th>Час</th><th>Відстань</th></tr></thead>
+    <tbody id="t2"></tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2><b>3</b>Виконай обчислення.</h2>
+  <div class="grid" id="t3"></div>
+</section>
+
+<p class="hint">Будь ласка! Перевір роботу!</p>
+<div class="bar">
+  <button class="go" id="chk">Перевірити роботу</button>
+  <button id="new">Нові числа</button>
+</div>
+
+<section id="res" hidden aria-live="polite" style="margin-top:24px"></section>
+</div>
+</main>
+
+<script>
+// Адреса веб-застосунку Google Apps Script (див. інструкцію). Поки порожньо — режим «Самостійна робота» нічого не надсилає.
+const SCRIPT_URL='';
+let rng=Math.random,mode='train',S={},t0=0,timer=null;
+const rnd=(a,b)=>Math.floor(rng()*(b-a+1))+a;
+const pick=a=>a[rnd(0,a.length-1)];
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=rnd(0,i);[a[i],a[j]]=[a[j],a[i]]}return a};
+const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+const digits=n=>String(n).split('').map(c=>`<span class="d">${c}</span>`).join('');
+let items=[],sols=[],gid=0;
+
+// Поле відповіді: boxes — кількість клітинок-цифр, інакше одне поле
+function field(task,ans,boxes,unit,g,noFix){
+  const wrap=el('div','fw'),box=el('span',boxes?'bxs':''),ins=[];
+  if(boxes){
+    for(let i=0;i<boxes;i++){
+      const x=el('input','bx');x.maxLength=1;x.inputMode='numeric';x.autocomplete='off';
+      x.setAttribute('aria-label','цифра '+(i+1));
+      x.addEventListener('input',()=>{x.value=x.value.replace(/\D/g,'');const n=x.nextElementSibling;if(x.value&&n)n.focus()});
+      x.addEventListener('keydown',e=>{const p=x.previousElementSibling;if(e.key==='Backspace'&&!x.value&&p)p.focus()});
+      ins.push(x);box.append(x);
+    }
+  }else{
+    const x=el('input','in');x.inputMode='numeric';x.autocomplete='off';x.setAttribute('aria-label','відповідь');
+    x.addEventListener('input',()=>{x.value=x.value.replace(/\D/g,'')});
+    ins.push(x);box.append(x);
+  }
+  const fix=noFix?null:el('span','fix');
+  wrap.append(box);
+  if(unit)wrap.append(el('span','',unit));
+  if(fix)wrap.append(fix);
+  const it={task,ans,ins,wrap,fix,g:g??++gid};
+  items.push(it);
+  if(mode==='train')ins.forEach(x=>x.addEventListener(boxes?'input':'change',()=>live(it)));
+  return wrap;
+}
+
+// 1. Усні обчислення
+function mental(kind){
+  for(;;){
+    if(kind===0){ // a : b : c
+      const b=rnd(2,6),c=pick([2,5,10]),r=rng()<.6?rnd(2,9)*10:rnd(2,5)*100,a=r*b*c;
+      if(a<=12000)return{t:`${a} : ${b} : ${c} =`,ans:r};
+    }else{ // a : b · c
+      const b=rnd(2,9),r=pick([rnd(2,9),rnd(2,9)*10,rnd(2,9)*10,rnd(2,5)*100]),c=rng()<.5?rnd(2,9):rnd(2,9)*10;
+      if(r*b<=1000&&r*c<=3000)return{t:`${r*b} : ${b} · ${c} =`,ans:r*c};
+    }
+  }
+}
+function build1(){
+  const box=document.getElementById('t1');box.innerHTML='';
+  shuffle([0,0,1,1,1,1]).forEach(k=>{
+    const m=mental(k),d=el('div','ex');
+    d.append(el('span','',m.t),field(0,m.ans,0));
+    box.append(d);
+  });
+}
+
+// 2. Таблиця: швидкість × час = відстань
+// Усі числа ≤ 1000, час — одна цифра. Якщо шукаємо час, швидкість «кругла», щоб ділити усно.
+function trip(type){
+  for(;;){
+    let v,t;
+    if(type==='t'){v=pick([20,25,30,40,50,60,70,80,90,120,150,200]);t=rnd(3,9)}
+    else{v=rng()<.85?rnd(12,99):pick([100,110,120,125,150,200]);t=rnd(2,9)}
+    if(v*t<=1000)return{v,t,d:v*t};
+  }
+}
+function build2(){
+  const body=document.getElementById('t2');body.innerHTML='';
+  shuffle(['s','d','t','s','d']).forEach(type=>{
+    const{v,t,d}=trip(type);
+    const tr=el('tr');
+    const cells=[[v,'км/год','s'],[t,'год','t'],[d,'км','d']];
+    cells.forEach(([val,unit,k])=>{
+      const td=el('td');
+      if(k===type)td.append(field(1,val,0,unit));else td.textContent=val+' '+unit;
+      tr.append(td);
+    });
+    body.append(tr);
+  });
+}
+
+// 3. Письмові обчислення
+function genDiv(n){
+  for(;;){
+    const d=rnd(2,9),lo=Math.ceil(10**(n-1)/d),hi=Math.floor((10**n-1)/d);
+    let q=String(rnd(lo,hi));
+    if(rng()<.5&&q.length>2){const i=rnd(1,q.length-1);q=q.slice(0,i)+'0'+q.slice(i+1)}
+    const N=d*+q;
+    if(String(N).length===n)return{N,d,q};
+  }
+}
+function genMul(){
+  let s=String(rnd(10000,99999));
+  if(rng()<.5){const i=rnd(1,4);s=s.slice(0,i)+'0'+s.slice(i+1)}
+  return{N:+s,m:rnd(2,9)};
+}
+// Кроки ділення стовпчиком: добуток, лінія, наступне неповне ділене ...
+function divSteps(N,d){
+  const s=String(N),n=s.length,k=+s[0]>=d?1:2,L=n-k+1,rows=[];
+  let part=+s.slice(0,k);
+  for(let i=0;i<L;i++){
+    const e=k-1+i,p=Math.floor(part/d)*d,r=part-p,ps=e-String(p).length+1;
+    if(i>0)rows.push({v:part,e});
+    rows.push({v:p,e,m:1});
+    if(i<L-1){
+      const np=r*10+ +s[k+i],ns=e+1-String(np).length+1;
+      rows.push({sep:1,a:Math.min(ps,ns),b:e+1});
+      part=np;
+    }else{
+      rows.push({sep:1,a:ps,b:e});
+      rows.push({v:r,e});
+    }
+  }
+  return rows;
+}
+function build3(){
+  const box=document.getElementById('t3');box.innerHTML='';
+  [4,4,4,4,5,5].forEach(n=>{
+    const{N,d,q}=genDiv(n),pb=el('div','pb'),g=el('div','long'),id=++gid,rows=divSteps(N,d);
+    g.append(el('div','dvd',digits(N)),el('div','dvs',digits(d)));
+    const st=el('div','st');st.style.setProperty('--n',n);
+    rows.forEach((r,i)=>{
+      if(r.sep){const x=el('div','sep');x.style.gridColumn=`${r.a+2} / ${r.b+3}`;x.style.gridRow=i+1;st.append(x);return}
+      const v=String(r.v),w=field(2,v,v.length,null,id,true);
+      w.style.gridColumn=`${r.e-v.length+3} / ${r.e+3}`;w.style.gridRow=i+1;st.append(w);
+      if(r.m){const m=el('div','mn','−');m.style.gridColumn=`${r.e-v.length+2} / ${r.e-v.length+3}`;m.style.gridRow=i+1;st.append(m)}
+    });
+    const qt=el('div','qt');qt.append(field(2,q,q.length,null,id));
+    g.append(st,qt);
+    const sol=el('div','sol');pb.append(g,sol);box.append(pb);
+    sols.push({g:id,node:sol,text:`Правильно: ${N} : ${d} = ${q}. Проміжні числа: ${rows.filter(r=>!r.sep).map(r=>r.v).join(', ')}`});
+  });
+  for(let i=0;i<4;i++){
+    const{N,m}=genMul(),p=String(N*m),pb=el('div','pb'),g=el('div','mul');
+    g.append(el('div','',digits(N)),el('div','r2',`<span class="d">×</span>${digits(m)}`));
+    g.append(field(2,p,p.length));
+    pb.append(g);box.append(pb);
+  }
+}
+
+function build(){
+  items=[];sols=[];gid=0;build1();build2();build3();
+  document.getElementById('res').hidden=true;
+  document.getElementById('chk').disabled=false;
+}
+
+function check(){
+  const names=['Усні обчислення','Таблиця','Письмові обчислення'],sc=[0,0,0],tot=[0,0,0];
+  const G={};
+  items.forEach(it=>{
+    const ok=it.ins.map(i=>i.value).join('').trim()===String(it.ans);
+    it.wrap.classList.remove('ok','bad');it.wrap.classList.add(ok?'ok':'bad');
+    if(it.fix)it.fix.innerHTML=ok?'✓':`✗ правильно: <b>${it.ans}</b>`;
+    it.ins.forEach(i=>i.disabled=true);
+    const o=G[it.g]=G[it.g]||{t:it.task,ok:true};
+    if(!ok)o.ok=false;
+  });
+  Object.values(G).forEach(o=>{tot[o.t]++;if(o.ok)sc[o.t]++});
+  sols.forEach(x=>{if(!G[x.g].ok)x.node.textContent=x.text});
+  const s=sc[0]+sc[1]+sc[2],t=tot[0]+tot[1]+tot[2],p=Math.round(s/t*100);
+  const msg=p>=90?'Чудова робота! Так тримати!':p>=70?'Добре! Ще трохи — і буде ідеально.':p>=50?'Непогано. Подивись на червоні відповіді й спробуй з новими числами.':(mode==='work'?'Не засмучуйся — тренуйся, і наступного разу вийде краще!':'Спробуй ще раз — натисни «Нові числа».');
+  const r=document.getElementById('res');
+  r.innerHTML=`<h2>Результат</h2><p class="score">${s} з ${t}</p><div class="track"><i style="width:${p}%"></i></div><p style="margin:0"><b>${msg}</b></p><ul>${names.map((n,i)=>`<li>${n}: ${sc[i]} з ${tot[i]}</li>`).join('')}</ul>`;
+  clearInterval(timer);
+  if(mode==='work')afterWork(s,t,p,sc,tot);
+  r.hidden=false;
+  document.getElementById('chk').disabled=true;
+  r.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'center'});
+}
+
+const $=id=>document.getElementById(id);
+
+// Миттєва перевірка в тренажері: коли поле заповнене повністю
+function live(it){
+  const v=it.ins.map(i=>i.value).join('').trim();
+  const full=it.ins.length>1?it.ins.every(i=>i.value!==''):v!=='';
+  it.wrap.classList.remove('ok','bad');
+  if(it.fix)it.fix.textContent='';
+  if(!full)return;
+  const ok=v===String(it.ans);
+  it.wrap.classList.add(ok?'ok':'bad');
+  if(it.fix)it.fix.textContent=ok?'✓':'✗';
+}
+
+// Варіант учня: однакове ім’я + клас + код роботи завжди дають однакові числа
+function xmur(str){let h=1779033703^str.length;for(let i=0;i<str.length;i++){h=Math.imul(h^str.charCodeAt(i),3432918353);h=h<<13|h>>>19}return()=>{h=Math.imul(h^h>>>16,2246822507);h=Math.imul(h^h>>>13,3266489909);return(h^=h>>>16)>>>0}}
+function mulberry(a){return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+
+function begin(m,info){
+  mode=m;S=info||{};
+  rng=m==='work'?mulberry(xmur(`${S.w}|${S.cls}|${S.name}`.toLowerCase())()):Math.random;
+  $('start').hidden=true;$('work').hidden=false;
+  $('who').textContent=m==='work'?`${S.name}, ${S.cls}`:'Тренажер';
+  $('chk').textContent=m==='work'?'Завершити й надіслати':'Перевірити все';
+  $('new').hidden=$('sw').hidden=m==='work';
+  $('tm').textContent='';
+  build();
+  if(m==='work'){
+    t0=Date.now();
+    const tick=()=>{const x=Math.floor((Date.now()-t0)/1000);$('tm').textContent='⏱ '+Math.floor(x/60)+':'+String(x%60).padStart(2,'0')};
+    tick();timer=setInterval(tick,1000);
+  }
+}
+
+// Надсилання результату вчителю (Google Apps Script → Google Таблиця)
+function afterWork(s,t,p,sc,tot){
+  const data={w:S.w,cls:S.cls,name:S.name,score:s,total:t,pct:p,t1:sc[0],t2:sc[1],t3:sc[2],sec:Math.round((Date.now()-t0)/1000),
+    answers:items.map(it=>{const v=it.ins.map(i=>i.value).join('');return v===String(it.ans)?v:`${v||'—'}≠${it.ans}`}).join(' | ')};
+  try{localStorage.setItem(lockKey(S),'1')}catch(e){}
+  const r=$('res'),st=el('p','',''),b=el('div','bar'),cp=el('button','','Скопіювати результат'),rt=el('button','','Надіслати ще раз');
+  rt.hidden=true;st.style.cssText='font-weight:800;margin-top:14px';
+  b.append(cp,rt);r.append(st,b);
+  const go=async()=>{
+    rt.hidden=true;
+    if(!SCRIPT_URL){st.textContent='Надсилання не налаштоване. Скопіюй результат і покажи його вчителю.';return}
+    st.textContent='Надсилаю…';
+    try{
+      await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)});
+      st.textContent='✓ Результат надіслано вчителю.';
+    }catch(e){st.textContent='Не вдалося надіслати. Перевір інтернет і натисни «Надіслати ще раз».';rt.hidden=false}
+  };
+  rt.onclick=go;
+  cp.onclick=async()=>{
+    const txt=`${S.name}, ${S.cls}: ${s} з ${t}`+(S.w?` (${S.w})`:'');
+    try{await navigator.clipboard.writeText(txt);cp.textContent='Скопійовано ✓'}catch(e){prompt('Скопіюй текст:',txt)}
+  };
+  go();
+}
+
+const q=new URLSearchParams(location.search);
+const lockKey=i=>`done|${i.w}|${i.cls}|${i.name}`.toLowerCase();
+$('m-train').onclick=()=>begin('train');
+$('m-work').onclick=()=>{$('modes').hidden=true;$('wform').hidden=false;$('nm').focus()};
+$('wf').onsubmit=e=>{
+  e.preventDefault();
+  const name=$('nm').value.trim().replace(/\s+/g,' '),cls=$('cl').value.trim();
+  if(!name||!cls)return;
+  const info={name,cls,w:q.get('w')||''};
+  let done=null;try{done=localStorage.getItem(lockKey(info))}catch(e){}
+  if(done){let m=$('lockmsg');if(!m){m=el('p','');m.id='lockmsg';m.style.cssText='color:#b02a2a;font-weight:800';$('wf').prepend(m)}
+    m.textContent='Цю роботу вже виконано на цьому пристрої. Нову спробу може дати вчитель.';return}
+  begin('work',info);
+};
+$('sw').onclick=()=>{location.href=location.pathname};
+$('chk').onclick=()=>{
+  const empty=items.filter(it=>it.ins.every(i=>i.value==='')).length;
+  if(mode==='work'&&empty&&!confirm(`Порожніх відповідей: ${empty}. Завершити роботу?`))return;
+  check();
+};
+$('new').onclick=()=>{build();scrollTo({top:0})};
+$('cl').value=q.get('class')||'';
+if(q.get('mode')==='train')begin('train');
+else if(q.get('mode')==='work')$('m-work').click();
+</script>
+</body>
+</html>
