@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Самостійна робота</title>
+<title>Множення та ділення</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Nunito:wght@400;700;800&subset=cyrillic,latin&display=swap" rel="stylesheet">
@@ -12,7 +12,8 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--sky);color:var(--ink);font:18px/1.5 Nunito,"Trebuchet MS",system-ui,sans-serif}
 main{max-width:1000px;margin:0 auto;padding:24px 16px 56px}
-h1{font:400 clamp(36px,7vw,58px)/1.1 Marmelad,"Trebuchet MS",sans-serif;color:#2a63b5;text-shadow:2px 2px 0 #fff,4px 4px 0 #b9d3ef;margin:8px 0 24px}
+h1{font:400 clamp(36px,7vw,58px)/1.1 Marmelad,"Trebuchet MS",sans-serif;color:#2a63b5;text-shadow:2px 2px 0 #fff,4px 4px 0 #b9d3ef;margin:8px 0 6px}
+.sub{margin:0 0 24px;font-weight:800;color:#4a6a94}
 section{background:#fff;border:2px solid var(--line);border-radius:18px;padding:18px 20px;margin-bottom:20px}
 h2{font-size:20px;margin:0 0 16px;display:flex;gap:10px;align-items:center}
 h2 b{display:grid;place-items:center;flex:none;width:32px;height:32px;border-radius:50%;background:var(--ink);color:#fff}
@@ -71,7 +72,8 @@ label{display:block;font-weight:800;margin:12px 0 4px}
 </head>
 <body>
 <main>
-<h1>Самостійна робота</h1>
+<h1>Множення та ділення</h1>
+<p class="sub">Тренажер і самостійна робота</p>
 
 <div id="start">
   <section id="modes">
@@ -84,10 +86,10 @@ label{display:block;font-weight:800;margin:12px 0 4px}
   <section id="wform" hidden>
     <h2>Хто виконує роботу?</h2>
     <form id="wf">
-      <label for="nm">Прізвище та ім’я</label>
+      <label for="nm">Ім’я</label>
       <input class="txt" id="nm" maxlength="40" autocomplete="off" required>
       <label for="cl">Клас</label>
-      <input class="txt" id="cl" maxlength="10" autocomplete="off" required placeholder="наприклад, 4-Б">
+      <input class="txt" id="cl" maxlength="10" autocomplete="off" required placeholder="наприклад, 4-А">
       <div class="bar"><button class="go" type="submit">Почати роботу</button></div>
     </form>
   </section>
@@ -126,14 +128,14 @@ label{display:block;font-weight:800;margin:12px 0 4px}
 
 <script>
 // Адреса веб-застосунку Google Apps Script (див. інструкцію). Поки порожньо — режим «Самостійна робота» нічого не надсилає.
-const SCRIPT_URL='https://script.google.com/macros/s/AKfycbzmiUYkYfE3Z_gbWrvEYE2_cywRuNgGj__Tg-qfSvUcMJbOllSgkrUDmjHS4XVBIOD0/exec';
+const SCRIPT_URL='';
 let rng=Math.random,mode='train',S={},t0=0,timer=null;
 const rnd=(a,b)=>Math.floor(rng()*(b-a+1))+a;
 const pick=a=>a[rnd(0,a.length-1)];
 const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=rnd(0,i);[a[i],a[j]]=[a[j],a[i]]}return a};
 const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
 const digits=n=>String(n).split('').map(c=>`<span class="d">${c}</span>`).join('');
-let items=[],sols=[],gid=0;
+let items=[],sols=[],gid=0,qs={};
 
 // Поле відповіді: boxes — кількість клітинок-цифр, інакше одне поле
 function field(task,ans,boxes,unit,g,noFix){
@@ -177,7 +179,7 @@ function build1(){
   const box=document.getElementById('t1');box.innerHTML='';
   shuffle([0,0,1,1,1,1]).forEach(k=>{
     const m=mental(k),d=el('div','ex');
-    d.append(el('span','',m.t),field(0,m.ans,0));
+    d.append(el('span','',m.t),field(0,m.ans,0));qs[gid]=m.t;
     box.append(d);
   });
 }
@@ -200,7 +202,7 @@ function build2(){
     const cells=[[v,'км/год','s'],[t,'год','t'],[d,'км','d']];
     cells.forEach(([val,unit,k])=>{
       const td=el('td');
-      if(k===type)td.append(field(1,val,0,unit));else td.textContent=val+' '+unit;
+      if(k===type){td.append(field(1,val,0,unit));qs[gid]=`швидкість: ${type==='s'?'?':v+' км/год'}, час: ${type==='t'?'?':t+' год'}, відстань: ${type==='d'?'?':d+' км'}`}else td.textContent=val+' '+unit;
       tr.append(td);
     });
     body.append(tr);
@@ -254,20 +256,20 @@ function build3(){
       if(r.m){const m=el('div','mn','−');m.style.gridColumn=`${r.e-v.length+2} / ${r.e-v.length+3}`;m.style.gridRow=i+1;st.append(m)}
     });
     const qt=el('div','qt');qt.append(field(2,q,q.length,null,id));
-    g.append(st,qt);
+    g.append(st,qt);qs[id]=`${N} : ${d}`;
     const sol=el('div','sol');pb.append(g,sol);box.append(pb);
     sols.push({g:id,node:sol,text:`Правильно: ${N} : ${d} = ${q}. Проміжні числа: ${rows.filter(r=>!r.sep).map(r=>r.v).join(', ')}`});
   });
   for(let i=0;i<4;i++){
     const{N,m}=genMul(),p=String(N*m),pb=el('div','pb'),g=el('div','mul');
     g.append(el('div','',digits(N)),el('div','r2',`<span class="d">×</span>${digits(m)}`));
-    g.append(field(2,p,p.length));
+    g.append(field(2,p,p.length));qs[gid]=`${N} × ${m}`;
     pb.append(g);box.append(pb);
   }
 }
 
 function build(){
-  items=[];sols=[];gid=0;build1();build2();build3();
+  items=[];sols=[];qs={};gid=0;build1();build2();build3();
   document.getElementById('res').hidden=true;
   document.getElementById('chk').disabled=false;
 }
@@ -330,10 +332,29 @@ function begin(m,info){
   }
 }
 
+// Звіт для вчителя: по одному рядку на приклад (умова, відповідь учня, правильна відповідь, кроки ділення)
+function report(){
+  const G=new Map(),cnt=[0,0,0],details=[],errs=[];
+  items.forEach(it=>{if(!G.has(it.g))G.set(it.g,[]);G.get(it.g).push(it)});
+  const val=it=>it.ins.map(i=>i.value).join('');
+  G.forEach((its,g)=>{
+    const t=its[0].task,num=`${t+1}.${++cnt[t]}`,last=its[its.length-1],L=its.length-1;
+    const ok=its.every(it=>val(it)===String(it.ans));
+    const steps=L?its.slice(0,L).map((it,i)=>{
+      const lab=i===0?'добуток':i===L-1?'залишок':i%2?'нове ділене':'добуток',v=val(it)||'—';
+      return `${lab} ${v===String(it.ans)?v:`${v} ✗ (має бути ${it.ans})`}`;
+    }).join(' → '):'';
+    details.push([num,qs[g]||'',val(last)||'—',last.ans,ok?'✓':'✗',steps]);
+    if(!ok)errs.push(num);
+  });
+  return{details,errs};
+}
+
 // Надсилання результату вчителю (Google Apps Script → Google Таблиця)
 function afterWork(s,t,p,sc,tot){
+  const rp=report();
   const data={w:S.w,cls:S.cls,name:S.name,score:s,total:t,pct:p,t1:sc[0],t2:sc[1],t3:sc[2],sec:Math.round((Date.now()-t0)/1000),
-    answers:items.map(it=>{const v=it.ins.map(i=>i.value).join('');return v===String(it.ans)?v:`${v||'—'}≠${it.ans}`}).join(' | ')};
+    answers:rp.errs.length?'Помилки: '+rp.errs.join(', '):'Без помилок',details:rp.details};
   try{localStorage.setItem(lockKey(S),'1')}catch(e){}
   const r=$('res'),st=el('p','',''),b=el('div','bar'),cp=el('button','','Скопіювати результат'),rt=el('button','','Надіслати ще раз');
   rt.hidden=true;st.style.cssText='font-weight:800;margin-top:14px';
